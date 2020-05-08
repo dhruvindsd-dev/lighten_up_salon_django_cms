@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- 	# title, s_description, content, hash_tags, private, created_at(automatic)
+   -->
+<form class="container animate-top" method="POST" style="font-family: 'Source Sans Pro', sans-serif; font-size: 18px">
+   {% csrf_token %}
+   <h2 class="text-spring-green"><b>{{ title }}</b></h2>
+   <p>
+      <label>
+   <h4>Title</h4></label>
+   <input class="input round border-2-g" name="rh_title" type="text" style="width: 60%" value="{{blog.title}}" placeholder="title* "required></p>
+   <p>
+      <label>
+   <h4>Description</h4></label>
+   <input class="input  border round border-2-g  " name="rh_description" type="text" style="width:80%" value="{{blog.description}}" placeholder="add a short description* " required>
+   </p>
+  <!--  <p>
+      <input class="checkbox" type="checkbox" name="rh_private">
+      <label class="large">Private</label>
+   </p> -->
+   <br>
+   <p>
+      <label>
+   <h4>Content</h4></label>
+   <textarea class="input round border-2-g" name="rh_content" style="width: 100%" rows="30" placeholder="your main content * ">{{blog.content}}</textarea>
+   </p>
+   <br>
+   <button class="button  hover-blue border-2-g " type="submit" style="border-radius: 5px"> <i class="fa fa-plus margin-right" aria-hidden="true"></i>{{btn_text}}</button>
+   <br><br><br><br>
+</form>
+{% endblock %}

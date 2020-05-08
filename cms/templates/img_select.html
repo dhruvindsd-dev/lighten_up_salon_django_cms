@@ -1,0 +1,138 @@
+{% extends 'base.html' %} {% block content %}
+    <!-- Header -->
+    <div class="animate-top">
+        <div class="header " style="font-size: 20px; margin: auto;width: 60%;">
+            <p class="hide-large hide-medium">Select a image for your post</p>
+            <p class="xxlarge hide-small">Select a image for your post</p>
+            <input class="input border-2-g round" name="img_tag" type="text" placeholder="Enter a keyword to get images" id="myInput">
+            <button class="btn margin-top border-2-g" onclick="get_url();" style="border-radius: 5px"> <i class="fa fa-search margin-right"></i>Search </button>
+        </div>
+        <div>
+            </div>
+            <!-- Photo Grid -->
+            <h1 id='error'></h1>
+            <div class="row" id='row'>
+                <div class="column">
+                    <img  class="grid-hover zoom"  style="width:100%" id="0">
+                    <img  class="grid-hover zoom"  style="width:100%" id='4'>
+                    <img  class="grid-hover zoom"  style="width:100%" id='8'>
+                    
+                </div>
+                <div class="column">
+                    <img  class="grid-hover zoom"  style="width:100%" id='1'>
+                    <img  class="grid-hover zoom"  style="width:100%" id='5'>
+                    <img  class="grid-hover zoom"  style="width:100%" id='9'>
+                </div>
+                <div class="column">
+                    <img  class="grid-hover zoom"  style="width:100%" id='2'>
+                    <img  class="grid-hover zoom"  style="width:100%" id='6'>
+                    <img  class="grid-hover zoom"  style="width:100%" id='10'>
+                    
+                </div>
+                <div class="column">
+                    <img  class="grid-hover zoom"  style="width:100%" id='3'>
+                    <img  class="grid-hover zoom"  style="width:100%" id='7'>
+                    <img  class="grid-hover zoom"  style="width:100%" id='11'>
+                    
+                </div>
+            </div>
+            <!-- pagination  -->
+            <div class="center margin">
+                <button class="btn margin-top border-2-g" onclick="before();" style="border-radius: 5px" id="back"><i class="fa fa-arrow-left"></i></button>
+                <button class="btn margin-top border-2-g" onclick="next();" style="border-radius: 5px" id="next"> <i class="fa fa-arrow-right"></i></button>
+            </div>
+                <!-- end pagination -->
+            </div>
+
+            <script>
+            var input = document.getElementById("myInput");
+            var page_counter , total_pages, img_links, value
+            // getting data from the unsplash
+            page_counter = 0
+            
+            function get_url(){
+                page_counter = 1 
+                value = input.value
+                fetch(`https://api.unsplash.com/search/photos?query=${value}&orientation=landscape&per_page=12&page=${page_counter}&client_id=11f2ff5a50fcce4df43aa4c897d132d3f5ad4a84ed0aec7be67718deb5120192`)
+                .then((resp) => resp.json()) 
+                .then(data => {
+                    if (data.results.length == 0){
+                        document.getElementById('error').innerHTML='Try searching some other keyword'
+                            } 
+                    else{document.getElementById('error').innerHTML=''}
+                    results = data.results
+                    total_pages = data.total_pages
+                    urls = []
+                    results.map(item => {urls.push(item.urls.small)})
+                    img_links = document.getElementsByClassName('zoom')
+                    urls.map((url,index) => {
+                        img_links[index].src = url
+                        img_links[index].addEventListener("click", () => {location.href=`/save/${url}`});
+
+                    })
+                    document.getElementById('next').disabled = false
+                    document.getElementById('back').disabled = false
+                    document.getElementById('next').style.backgroundColor = 'white'
+                    document.getElementById('back').style.backgroundColor = 'white'
+
+                    
+                }) 
+            }
+
+            function counter_get_url(){
+                value = input.value
+                fetch(`https://api.unsplash.com/search/photos?query=${value}&orientation=landscape&per_page=12&page=${page_counter}&client_id=11f2ff5a50fcce4df43aa4c897d132d3f5ad4a84ed0aec7be67718deb5120192  `)
+                .then((resp) => resp.json()) 
+                .then(data => {
+                    if (data.results.length == 0){
+                        document.getElementById('error').innerHTML='Try searching some other keyword'
+                            } 
+                    else{document.getElementById('error').innerHTML=''}
+                    results = data.results
+                    total_pages = data.total_pages
+                    urls = []
+                    results.map(item => {urls.push(item.urls.small)})
+                    img_links = document.getElementsByClassName('zoom')
+                    urls.map((url,index) => {
+                        img_links[index].src = url
+                        img_links[index].addEventListener("click", () => {location.href=`save/${url}`});
+
+                    })
+                    document.getElementById('next').disabled = false
+                    document.getElementById('back').disabled = false
+                    document.getElementById('next').style.backgroundColor = 'white'
+                    document.getElementById('back').style.backgroundColor = 'white'
+
+                    
+                }) 
+            }
+
+            function next(){
+                page_counter++
+                if (page_counter > total_pages ){
+                    document.getElementById('next').disabled = true
+                    document.getElementById('next').style.backgroundColor = 'grey'
+                    page_counter ++
+                } 
+                else{counter_get_url()}
+                
+
+            }
+            function before(){
+                page_counter--
+                if (page_counter <= 0 ){
+                    document.getElementById('back').disabled = true
+                    document.getElementById('back').style.backgroundColor = 'grey'
+                }
+                else{counter_get_url()}
+            }
+
+            input.addEventListener("keyup", function(event) {
+            if (event.keyCode === 13) {
+                get_url()
+            }
+            });  
+
+            // fetch('https://api.unsplash.com/search/photos?query=food&orientation=landscape&per_page=12&page={page}&client_id=11f2ff5a50fcce4df43aa4c897d132d3f5ad4a84ed0aec7be67718deb5120192')
+                        </script>
+        {% endblock %}

@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+<!-- Header -->
+{% block content %}
+	<header class="container center padding-32 animate-top ">
+		<h1 class="text-spring-green center"><b>Lighten Up Salon</b></h1>
+		{% load static %}
+		<input class="input border-2-g round animate-input dark- focus-input" type="search" style="width:20%; max-width: 40%" placeholder="Search..."  id="input_search" onkeyup="search()" >
+		<div class="btn margin-right  right border-2-g hover-green"  style="border-radius: 5px; margin-bottom: 20px" onclick="window.location='/create_user'"><i class="fa fa-cross"></i>Create New User </div>
+		<div class="btn margin-right  right border-2-g hover-blue"  style="border-radius: 5px; margin-bottom: 20px" onclick="window.location='/create_blog'"><i class="fa fa-cross"></i>Create New Post </div>
+
+	</header>
+	<!-- Grid -->
+	<div class="row">
+		<!-- Post entries -->
+		<div class="content ">
+			{% for blog in blogs %}
+				<div class="hide-large hide-medium">   <!-- visibility -->
+				<div class="margin animate-zoom" onclick="location.href='/view/{{blog.id}}';" style="cursor:pointer;">
+					<img src={{blog.img_link}} alt="Nature" style="width:100%;object-fit: cover;filter: brightness(90%);opacity: 0.9">
+					<div class="container ">
+						<h3 class="text-spring-green to_search"><b>{{blog.title|title}}</b></h3> <!-- to_search -->
+						<p>{{blog.description}}</p> <!-- to_search -->
+						<p class="small" style="opacity:0.5">{{blog.created_at}}</p>
+					</div>
+				</div>
+			</div>
+			<div class="hide-small visibility">  <!-- visibility -->
+			<div class="card-4 margin white animate-zoom zoom round" onclick="location.href='/view/{{blog.id}}';" style="cursor:pointer;">
+				<img src={{blog.img_link}} alt="Nature" style="width:100%; height: 300px;object-fit: cover;filter: brightness(80%);opacity: 0.9;">
+				<div class="container ">
+					<h3 class="text-spring-green to_search"><b>{{blog.title|title}}</b></h3> <!-- to_search -->
+					<p>{{blog.description}}</p> <!-- to_search -->
+					<p class="small" style="opacity:0.5">{{blog.created_at}} <br>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+		<!-- END POST ENTRIES -->
+	</div>
+	<!-- Books menu -->
+	<!-- END GRID -->
+</div>
+<br>
+<script>
+function search() {
+var input, filter, visibility, to_search, td, i;
+input = document.getElementById("input_search");
+filter = input.value.toUpperCase();
+to_search = document.getElementsByClassName("to_search");
+visibility = document.getElementsByClassName("visibility");
+visibility[0].style.display = null;
+for (i = 0; i < to_search.length; i++) {
+td = to_search[i]
+if (td) {
+txtValue = td.textCont || td.innerText;
+if (txtValue.toUpperCase().indexOf(filter) > -1) {
+visibility[i].style.display = "";
+} else {
+visibility[i].style.display = "none";
+}
+}
+}
+}
+</script>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+	<div class="display-middle">
+		<form class="container" method="post"> {% csrf_token %}
+			<div class="xlarge hide-small">Create New Gold Customer </div>
+			<div class="hide-large hide-medium large" >Create New Gold Customer </div>
+			<p><label>User name</label>
+			<input class="input border-2-g round" required name="username" type="text"></p>
+			<p><label>Password</label>
+			<input class="input border-2-g round" required name="password" type="text"></p>
+			<input type="submit" value="Submit" class="btn padding border-2-g round hover-green"  >
+			<br>
+		</form>
+	</div>
+{% endblock %}
